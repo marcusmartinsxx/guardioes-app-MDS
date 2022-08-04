@@ -173,7 +173,6 @@ const Home = ({ navigation }) => {
         lastWeek.setHours(0, 0, 0, 0)
 
         const lastFormDate = new Date(lastForm)
-        console.log(lastForm)
 
         if (!lastForm || lastFormDate.getTime() < lastWeek.getTime()) {
             setHasForm(true)
