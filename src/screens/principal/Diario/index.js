@@ -195,7 +195,7 @@ const Diario = () => {
         createdDate.setHours(0, 0, 0, 0)
 
         const diff = todayDate.getTime() - createdDate.getTime()
-        const daysTotal = Math.ceil(diff / (1000 * 60 * 60 * 24))
+        const daysTotal = Math.ceil(diff / (1000 * 3600 * 24))
         const daysMissing = daysTotal - daysMarked
 
         const percentGood = ((daysGood / daysTotal) * 100).toFixed(0)
