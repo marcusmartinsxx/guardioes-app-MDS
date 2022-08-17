@@ -1,0 +1,5 @@
+node_modules
+yarn-error.log
+android/local.properties
+.idea/.gitignore
+android/.gradle/5.5
