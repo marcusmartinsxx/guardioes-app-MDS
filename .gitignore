@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-node_modules
-yarn-error.log
-android/local.properties
-.idea/.gitignore
-android/.gradle/5.5
-=======
 node_modules
 yarn-error.log
 android/local.properties
 .idea/.gitignore
 android/.gradle/5.5
 .env
->>>>>>> visualizar-historico-saude
