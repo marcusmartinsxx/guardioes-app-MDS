@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { SafeAreaView, View, Text, Alert, Button, StyleSheet } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
 import { Avatar } from 'react-native-elements'
 import { PieChart } from 'react-native-svg-charts'
 import { useFocusEffect } from '@react-navigation/native'
+import { StatusContainer, TextStyle, StatusBemMal, Bem, Mal, StatusText } from '../Home/styles'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
@@ -49,6 +50,8 @@ import { HappyIcon, SadIcon } from '../../../img/imageConst'
 import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUserSurveys } from '../../../api/surveys'
+import { CoolAlert } from '../../../components/CoolAlert'
+import AwesomeAlert from 'react-native-awesome-alerts'
 
 LocaleConfig.defaultLocale = translate('lang.code')
 
@@ -276,7 +279,7 @@ const Diario = () => {
                             <SwiperStyled showPagination disableGesture={false}>
                                 <ChartContainer>
                                     <UserChart>
-                                        <CalendarStyled
+                                    <CalendarStyled
                                             current={moment().format(
                                                 'YYYY-MM-DD'
                                             )}
@@ -285,12 +288,11 @@ const Diario = () => {
                                                 allDatesMarked.map(
                                                     (symptomMarker) => {
                                                         if (
-                                                            symptomMarker.bad_since ===
+                                                            moment(symptomMarker.bad_since).format('YYYY-MM-DD') ===
                                                             day.dateString
                                                         ) {
-                                                            console.warn(
-                                                                symptomMarker.symptom
-                                                            )
+                                                            var sintomas = symptomMarker.symptom.toString()
+                                                            Alert.alert('Sintomas:', sintomas.split(',').join('\n'))
                                                         }
                                                     }
                                                 )
@@ -364,7 +366,9 @@ const Diario = () => {
                             </ReportsTitleWrapper>
 
                             <ReportsAll>
-                                <ReportsWell>
+                                <ReportsWell
+                                    onPress={() => console.warn("Bem")} //testando
+                                >
                                     <HappyIcon
                                         height={scale(45)}
                                         width={scale(45)}
@@ -384,7 +388,11 @@ const Diario = () => {
                                     </ReportData>
                                 </ReportsWell>
 
-                                <ReportsIll>
+                                <ReportsIll
+                                    onPress={() =>
+                                        console.warn("Mal") //testando
+                                    } //testando
+                                >
                                     <SadIcon
                                         height={scale(45)}
                                         width={scale(45)}

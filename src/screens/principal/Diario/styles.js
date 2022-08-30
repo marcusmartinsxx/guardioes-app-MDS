@@ -171,7 +171,9 @@ export const ReportsAll = styled.View`
     justify-content: space-between;
 `
 
-export const ReportsWell = styled(ShadowView).attrs({})`
+export const ReportsWell = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})`
     min-width: 47%;
     background-color: #5dd39e;
     border-radius: ${scale(18)}px;
@@ -184,7 +186,9 @@ export const ReportsWell = styled(ShadowView).attrs({})`
     shadow-offset: 0px 4px;
 `
 
-export const ReportsIll = styled(ShadowView).attrs({})`
+export const ReportsIll = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})`
     min-width: 47%;
     background-color: #f18f01;
     border-radius: ${scale(18)}px;
