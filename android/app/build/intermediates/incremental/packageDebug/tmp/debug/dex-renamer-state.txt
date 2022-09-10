@@ -1,3 +1,4 @@
-base.0=/home/iagow/code/gds/app/android/app/build/intermediates/transforms/r8/debug/0/classes.dex
+#Wed Aug 31 20:24:48 BRT 2022
+base.0=C\:\\Users\\djuan\\Dev\\Guardioes\\guardioes-app-MDS\\android\\app\\build\\intermediates\\transforms\\r8\\debug\\0\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

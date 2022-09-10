@@ -2,5 +2,7 @@ node_modules
 yarn-error.log
 android/local.properties
 .idea/.gitignore
-android/.gradle/5.5
+android/.gradle
+android 
+yarn.lock
 .env

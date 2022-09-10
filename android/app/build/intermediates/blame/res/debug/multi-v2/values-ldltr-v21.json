@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/iagow/code/gds/app/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ldltr-v21/values-ldltr-v21.xml",
+            "outputFile": "C:\\Users\\djuan\\Dev\\Guardioes\\guardioes-app-MDS\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ldltr-v21\\values-ldltr-v21.xml",
             "map": [
                 {
-                    "source": "/home/iagow/.gradle/caches/transforms-2/files-2.1/ff5579b0fd704d100dd064ce62c44ed8/appcompat-1.1.0/res/values-ldltr-v21/values-ldltr-v21.xml",
+                    "source": "C:\\Users\\djuan\\.gradle\\caches\\transforms-2\\files-2.1\\ff5579b0fd704d100dd064ce62c44ed8\\appcompat-1.1.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

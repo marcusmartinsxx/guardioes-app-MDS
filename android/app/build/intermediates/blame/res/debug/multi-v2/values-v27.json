@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/iagow/code/gds/app/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v27/values-v27.xml",
+            "outputFile": "C:\\Users\\djuan\\Dev\\Guardioes\\guardioes-app-MDS\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v27\\values-v27.xml",
             "map": [
                 {
-                    "source": "/home/iagow/code/gds/app/android/app/src/main/res/values-v27/styles.xml",
+                    "source": "C:\\Users\\djuan\\Dev\\Guardioes\\guardioes-app-MDS\\android\\app\\src\\main\\res\\values-v27\\styles.xml",
                     "from": {
                         "startLines": "3",
                         "startColumns": "4",
