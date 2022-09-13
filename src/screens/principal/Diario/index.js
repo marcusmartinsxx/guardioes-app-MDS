@@ -6,7 +6,6 @@ import Feather from 'react-native-vector-icons/Feather'
 import { Avatar } from 'react-native-elements'
 import { PieChart } from 'react-native-svg-charts'
 import { useFocusEffect } from '@react-navigation/native'
-import { StatusContainer, TextStyle, StatusBemMal, Bem, Mal, StatusText } from '../Home/styles'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
@@ -55,7 +54,8 @@ import AwesomeAlert from 'react-native-awesome-alerts'
 
 LocaleConfig.defaultLocale = translate('lang.code')
 
-const Diario = () => {
+const Diario = ({ navigation }) => {
+
     const {
         isOffline,
         token,
@@ -393,11 +393,10 @@ const Diario = () => {
                                         </ReportDataInfo>
                                     </ReportData>
                                 </ReportsWell>
-
                                 <ReportsIll
                                     onPress={() =>
-                                        console.warn("Mal") //testando
-                                    } //testando
+                                        navigation.navigate('Mal')
+                                    }
                                 >
                                     <SadIcon
                                         height={scale(45)}
