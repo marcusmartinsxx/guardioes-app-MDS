@@ -33,7 +33,7 @@ const TabBar = () => {
                     } else if (route.name === 'Noticias') {
                         iconName = 'message-square'
                     } else if (route.name === 'Ensino') {
-                        iconName = 'book-open'
+                        iconName = 'book'
                     }
 
                     return (

@@ -9,6 +9,7 @@ export const ScrollView = styled(VistaRolante).attrs({
         flexGrow: 1, // Ocupar todo o espaço disponível
         paddingVertical: percentage(7),
         paddingHorizontal: percentage(7),
+        justifyContent: 'space-between',
     },
 })``
 
@@ -53,6 +54,7 @@ export const RedeSocial = styled.View`
 
 export const SocialMediaButton = styled.TouchableOpacity`
     width: ${percentage(13.75)}px;
+    height: ${percentage(30)}px;
 `
 
 export const SocialMediaContainer = styled.View`

@@ -24,9 +24,9 @@ import {
 } from './styles';
 
 export default MenuDisciplina = () => {
-  const mehIcon = <AntDesignIcon name="meh" size={scale(35)} color="#FFF" />;
+  const mehIcon = <FontAwesome5Icon name="head-side-mask" size={scale(35)} color="#FFF" />;
   const bookIcon = <FontAwesome5Icon name="book-open" size={scale(50)} color="#FFF" />;
-  const listIcon = <FontAwesome5Icon name="clipboard" size={scale(60)} color="#FFF" />;
+  const listIcon = <FontAwesome5Icon name="question" size={scale(60)} color="#FFF" />;
   const signOutIcon = <FontAwesomeIcon name="sign-out" size={scale(29)} color="#FFF" />;
 
   const matriculaCalva = '191043683'
@@ -115,25 +115,6 @@ export default MenuDisciplina = () => {
                   }}
                 >
                   Acesse os{`\n`}questionários
-                </Text>
-              </ContentButtonsContainer>
-            </OptionButton>
-
-            <OptionButton style={{backgroundColor: '#4E8CA9',}}>
-              <ContentButtonsContainer
-                style={{
-                  justifyContent: 'center',
-                }}
-              >
-                {signOutIcon}
-                <Text
-                  style={{
-                    color: '#FFF',
-                    fontSize: scale(20),
-                    marginLeft: scale(5),
-                  }}
-                >
-                  Voltar
                 </Text>
               </ContentButtonsContainer>
             </OptionButton>
