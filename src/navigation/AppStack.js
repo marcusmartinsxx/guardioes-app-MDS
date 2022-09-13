@@ -17,6 +17,7 @@ import BadReport from '../screens/principal/BadReport'
 import BioSeguranca from '../screens/principal/BioSeguranca'
 import EditarPerfil from '../screens/principal/EditarPerfil'
 import FAQ from '../screens/principal/FAQ'
+import Mal from '../screens/principal/Mal'
 import NovoPerfil from '../screens/principal/NovoPerfil'
 import Perfis from '../screens/principal/Perfis'
 import Rumor from '../screens/principal/Rumor'
@@ -142,6 +143,11 @@ const AppStack = () => {
                 name='FAQ'
                 component={FAQ}
                 options={{ title: translate('faq.title') }}
+            />
+            <Stack.Screen
+                name='Mal'
+                component={Mal}
+                options={{ title: "Sintomas" }}
             />
         </Stack.Navigator>
     )

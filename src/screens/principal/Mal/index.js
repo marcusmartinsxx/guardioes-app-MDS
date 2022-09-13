@@ -6,6 +6,8 @@ import Share from 'react-native-share'
 import { Avatar } from 'react-native-elements'
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
+import { UserTip } from '../../../components/UserTip'
+import { CardWhite } from '../../../components/Cards'
 import {
     Container,
     FormInline,
@@ -20,14 +22,12 @@ import {
     IconWrapper,
     InfoWrapper,
     Name,
-    DateSince,
-    DateText,
-    DateSelector,
     FormTitleWrapper,
     FormTitle,
-    CheckBoxStyled,
-    Button,
     Sintoma,
+    ButtonContainer,
+    OptionButton,
+    SintomaTexto,
 } from './styles'
 
 import translate from '../../../../locales/i18n'
@@ -64,20 +64,25 @@ const BadReport = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(true)
     const [symptoms, setSymptoms] = useState([])
-
+    const [allDatesMarked, setAllDatesMarked] = useState([])
+    const [datesMarked, setDatesMarked] = useState([])
+    const [daysMarked, setDaysMarked] = useState(0)
+    const [daysMissing, setDaysMissing] = useState(0)
+    const [daysGood, setDaysGood] = useState(0)
+    const [daysBad, setDaysBad] = useState(0)
+    const [percentGood, setPercentGood] = useState(0)
+    const [percentBad, setPercentBad] = useState(0)
+    const [percentMissing, setPercentMissing] = useState(100)
+    const [title, setTitle] = useState('')
+    const [message, setMessage] = useState('')
     const [badSince, setBadSince] = useState(today)
-    const [personSymptoms, setPersonSymptoms] = useState([])
-    const [hasContactWithSymptoms, setHasContactWithSymptoms] = useState(false)
     const [contactWithSymptom, setContactWithSymptom] = useState(null)
     const [hasTraveled, setHasTraveled] = useState(false)
-    const [traveledTo, setTraveledTo] = useState('Brazil')
     const [wentToHospital, setWentToHospital] = useState(false)
-
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertTitle, setAlertTitle] = useState(null)
     const [alertMessage, setAlertMessage] = useState(null)
-
     const [inviteSurveillance, setInviteSurveillance] = useState(false)
     const [instituition, setInstituition] = useState('')
 
@@ -98,10 +103,122 @@ const BadReport = ({ navigation }) => {
         }
     }, [])
 
+    useEffect(() => {
+      getUserParticipation()
+  }, [daysMarked])
+
+  useEffect(() => {
+    defineMarkedDates()
+  }, [surveys])
+
+  const getSurveys = async () => {
+    if (!isOffline) {
+        const response = await getUserSurveys(user.id, token)
+
+        if (response.status === 200) {
+            storeSurveys(response.data.surveys)
+            setIsLoading(false)
+        }
+    } else {
+        const surveysCache = await getCacheData('surveysData', false)
+
+        if (surveysCache) {
+            storeSurveys(surveysCache)
+        }
+        setIsLoading(false)
+    }
+  }
+
+  const defineMarkedDates = () => {
+    const markedDatesGood = []
+    const markedDatesBad = []
+    const markedDatesAll = []
+
+    surveys.forEach((survey) => {
+        if (!person.is_household) {
+            if (!survey.household) {
+                if (survey.symptom && survey.symptom.length) {
+                    // BadReport
+                    markedDatesBad.push(
+                        survey.created_at.split('T', 1).toString()
+                    )
+                    markedDatesAll.push(survey)
+                } else {
+                    // GoodReport
+                    markedDatesGood.push(
+                        survey.created_at.split('T', 1).toString()
+                    )
+                }
+            }
+        } else if (survey.household && survey.household.id === person.id) {
+            if (survey.symptom && survey.symptom.length) {
+                // Household BadReport
+                markedDatesBad.push(
+                    survey.created_at.split('T', 1).toString()
+                )
+                markedDatesAll.push(survey)
+            } else {
+                // Household GoodReport
+                markedDatesGood.push(
+                    survey.created_at.split('T', 1).toString()
+                )
+            }
+        }
+    })
+
+    setAllDatesMarked(markedDatesAll)
+
+    const BadReports = markedDatesBad.reduce(
+        (c, v) =>
+            Object.assign(c, {
+                [v]: { selected: true, selectedColor: '#F18F01' },
+            }),
+        {}
+    )
+    const GoodReports = markedDatesGood.reduce(
+        (c, v) =>
+            Object.assign(c, {
+                [v]: { selected: true, selectedColor: '#5DD39E' },
+            }),
+        {}
+    )
+
+    Object.assign(GoodReports, BadReports)
+
+    const daysMarked = Object.keys(GoodReports).length
+    const daysBad = Object.keys(BadReports).length
+    const daysGood = daysMarked - daysBad
+
+    setDatesMarked(GoodReports)
+    setDaysMarked(daysMarked)
+    setDaysGood(daysGood)
+    setDaysBad(daysBad)
+  }
+
     const getGroupName = () => {
         const groupName = person.group ? person.group.split('/')[3] : null
         setInstituition(groupName)
     }
+
+  const getUserParticipation = () => {
+    const todayDate = new Date()
+    const createdDate = new Date(person.created_at)
+
+    createdDate.setHours(0, 0, 0, 0)
+
+    const diff = todayDate.getTime() - createdDate.getTime()
+    const daysTotal = Math.ceil(diff / (1000 * 3600 * 24))
+    const daysMissing = daysTotal - daysMarked
+
+    const percentGood = ((daysGood / daysTotal) * 100).toFixed(0)
+    const percentBad = ((daysBad / daysTotal) * 100).toFixed(0)
+    const percentMissing = ((daysMissing / daysTotal) * 100).toFixed(0)
+
+    setDaysMissing(daysMissing)
+    setPercentGood(percentGood)
+    setPercentBad(percentBad)
+    setPercentMissing(percentMissing)
+  }
 
     const showConfirmation = (status, data) => {
         const message = getSurveyConfirmation(status, data)
@@ -145,65 +262,6 @@ const BadReport = ({ navigation }) => {
                     },
                 },
             ],
-            { cancelable: false }
-        )
-    }
-
-    const showSyndromeAlert = (status, body) => {
-        let alert = []
-
-        if (body.messages.top_3[0].name === 'Síndrome Gripal') {
-            alert = [
-                {
-                    text: translate('advices.moreInformations'),
-                    onPress: () => {
-                        redirectAlert(
-                            'Ministerio da Saúde',
-                            'Deseja ser redirecionado para o website do Ministério da Saúde?',
-                            'https://coronavirus.saude.gov.br/sobre-a-doenca#se-eu-ficar-doente'
-                        )
-                    },
-                },
-                {
-                    text: 'Ok',
-                    onPress: () => {
-                        if (!inviteSurveillance) {
-                            showWhatsappAlert(status, body)
-                        } else {
-                            showSurveillanceInvite(
-                                person.name,
-                                { status, body },
-                                showWhatsappAlert,
-                                navigation
-                            )
-                        }
-                    },
-                },
-            ]
-        } else {
-            alert = [
-                {
-                    text: 'Ok',
-                    onPress: () => {
-                        if (!inviteSurveillance) {
-                            showConfirmation(status, body)
-                        } else {
-                            showSurveillanceInvite(
-                                person.name,
-                                { status, body },
-                                showConfirmation,
-                                navigation
-                            )
-                        }
-                    },
-                },
-            ]
-        }
-
-        Alert.alert(
-            body.messages.top_syndrome_message?.title,
-            body.messages.top_syndrome_message.warning_message,
-            alert,
             { cancelable: false }
         )
     }
@@ -325,112 +383,34 @@ const BadReport = ({ navigation }) => {
                     </InfoWrapper>
                 </User>
 
-                <DateSince>
-                    <DateText>{translate('badReport.sickAge')}</DateText>
-                    <DateSelector
-                        placeholder={translate('birthDetails.format')}
-                        date={badSince}
-                        format='DD-MM-YYYY'
-                        minDate='01-01-2018'
-                        maxDate={moment().local().format('DD-MM-YYYY')}
-                        locale='pt-BR'
-                        confirmBtnText={translate('birthDetails.confirmButton')}
-                        cancelBtnText={translate('birthDetails.cancelButton')}
-                        onDateChange={(date) => setBadSince(date)}
-                    />
-                </DateSince>
-
                 <FormTitleWrapper>
-                    <FormTitle>{translate('badReport.symptoms')}</FormTitle>
+                    <FormTitle>{"Selecione abaixo o sintoma para ver os dias em que você esteve com ele:"}</FormTitle>
                 </FormTitleWrapper>
 
                 {symptoms.map((symptom) => (
-                    <CheckBoxStyled
+                    <Sintoma
                         key={symptom.id}
-                        title={symptom.description}
-                        checked={personSymptoms.includes(symptom.code)}
                         onPress={() => {
-                            if (personSymptoms.includes(symptom.code)) {
-                                const newSymptoms = personSymptoms.filter(
-                                    (code) => code !== symptom.code
-                                )
-
-                                setPersonSymptoms(newSymptoms)
-                            } else {
-                                const newSymptoms = personSymptoms.slice()
-                                newSymptoms.push(symptom.code)
-
-                                setPersonSymptoms(newSymptoms)
+                          allDatesMarked.map(
+                            (symptomMarker) => {
+                              if(
+                                symptom => symptomMarker.symptom ===
+                                symptom.code
+                              ){
+                                setTitle("Dias com o Sintoma")
+                                let data = moment(symptomMarker.created_at).format('YYYY-MM-DD')
+                                setTitle("Dias com o Sintoma")
+                                setMessage(data)
+                                setShowAlert(true)
+                              }
                             }
+                          )
                         }}
-                    />
+                    >
+                        <SintomaTexto>{symptom.description}</SintomaTexto>
+                    </Sintoma>
                 ))}
 
-                <FormTitleWrapper>
-                    <FormTitle>
-                        {translate('badReport.answerQuestions')}
-                    </FormTitle>
-                </FormTitleWrapper>
-
-                {user.group_id ? (
-                    <CheckBoxStyled
-                        title={
-                            translate('badReport.checkboxes.third') +
-                            instituition +
-                            translate('badReport.checkboxes.thirdContinuation')
-                        }
-                        checked={hasTraveled}
-                        onPress={() => setHasTraveled(!hasTraveled)}
-                    />
-                ) : null}
-
-                {/*
-                {hasTraveled ? (
-                    <FormInline>
-                        <FormLabel>{translate('badReport.checkboxes.fourth')}</FormLabel>
-                        <Selector
-                            initValue={translate('selector.label')}
-                            cancelText={translate('selector.cancelButton')}
-                            data={countryChoices}
-                            onChange={(option) => setTraveledTo(option.key)}
-                        />
-                    </FormInline>
-                ) : null}
-                */}
-
-                <CheckBoxStyled
-                    title={translate('badReport.checkboxes.first')}
-                    checked={hasContactWithSymptoms}
-                    onPress={() =>
-                        setHasContactWithSymptoms(!hasContactWithSymptoms)
-                    }
-                />
-                {hasContactWithSymptoms ? (
-                    <FormInline>
-                        <FormLabel>Local onde ocorreu o contato:</FormLabel>
-                        <Selector
-                            initValue={translate('selector.label')}
-                            cancelText={translate('selector.cancelButton')}
-                            data={localSymptom}
-                            onChange={(option) =>
-                                setContactWithSymptom(option.key)
-                            }
-                        />
-                    </FormInline>
-                ) : null}
-
-                <CheckBoxStyled
-                    title={translate('badReport.checkboxes.second')}
-                    checked={wentToHospital}
-                    onPress={() => setWentToHospital(!wentToHospital)}
-                />
-                <Button onPress={() => sendSurvey()}>
-                    <SendContainer>
-                        <SendText>
-                            {translate('badReport.checkboxConfirm')}
-                        </SendText>
-                    </SendContainer>
-                </Button>
             </ScrollViewStyled>
 
             <CoolAlert
@@ -440,14 +420,13 @@ const BadReport = ({ navigation }) => {
             />
             <CoolAlert
                 show={showAlert}
-                title={alertTitle}
-                message={alertMessage}
+                title={title}
+                message={message}
                 closeOnTouchOutside
                 closeOnHardwareBackPress={false}
                 showConfirmButton
-                confirmText={translate('badReport.messages.button')}
-                onConfirmPressed={() => navigation.navigate('Mapa')}
-                onDismiss={() => navigation.navigate('Mapa')}
+                confirmText={"OK"}
+                onConfirmPressed={() => setShowAlert(false)}
             />
         </Container>
     )
