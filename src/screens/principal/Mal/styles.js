@@ -1,7 +1,10 @@
 import styled from 'styled-components';
-import { ScrollView as VistaRolante } from 'react-native';
+import { ScrollView as VistaRolante, TouchableOpacity } from 'react-native';
 import { scale, percentage } from '../../../utils/scalling';
 import ShadowView from 'react-native-simple-shadow-view';
+import DatePicker from 'react-native-datepicker'
+import { CheckBox } from 'react-native-elements'
+import { Card } from '../../../components/Cards'
 
 export const ScrollView = styled(VistaRolante).attrs({
     contentContainerStyle: {
@@ -41,7 +44,7 @@ export const DescriptionContainer = styled.View`
 `
 
 export const ButtonContainer = styled.Button`
-    background-color: blue;
+    ${Card}
 `
 
 export const RedeSocial = styled.View`
@@ -71,4 +74,74 @@ export const ContentButtonsContainer = styled.View`
 export const OptionButton = styled.TouchableOpacity`
     border-radius: ${scale(12)}px;
     margin-bottom: ${percentage(7)}px;
+`
+
+export const ScrollViewStyled = styled(ScrollView).attrs({
+    contentContainerStyle: {
+        flexGrow: 1,
+        paddingVertical: percentage(8),
+        paddingHorizontal: percentage(7),
+    },
+})``
+
+export const User = styled(ShadowView).attrs({})`
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: ${scale(18)}px;
+    flex-direction: row;
+    margin-bottom: ${percentage(6)}px;
+    padding: ${scale(15)}px;
+    shadow-color: #000000;
+    shadow-opacity: 0.1;
+    shadow-radius: 6px;
+    shadow-offset: 0px 4px;
+`
+
+export const IconWrapper = styled.View`
+    margin-right: ${percentage(4)}px;
+`
+
+export const InfoWrapper = styled.View`
+    flex: 1;
+    justify-content: center;
+`
+
+export const Name = styled.Text`
+    font-family: ArgentumSans-SemiBold;
+    font-size: ${scale(16)}px;
+    color: #348eac;
+`
+
+export const FormTitleWrapper = styled.View`
+    margin-top: ${scale(20)}px;
+    margin-bottom: ${scale(10)}px;
+`
+
+export const FormTitle = styled.Text`
+    font-family: ArgentumSans-Medium;
+    font-size: ${scale(16)}px;
+    color: #348eac;
+    text-align: left;
+    margin-left: ${scale(8)}px;
+`
+
+export const Sintoma = styled(TouchableOpacity).attrs({})`
+    background-color: #ffffff;
+    flex-direction: row;
+    border-radius: ${scale(18)}px;
+    margin-bottom: ${percentage(7)}px;
+    padding: ${scale(15)}px;
+    shadow-color: #000000;
+    shadow-opacity: 0.1;
+    shadow-radius: 6px;
+    shadow-offset: 0px 4px;
+    elevation : 10;
+`
+
+export const SintomaTexto = styled.Text`
+    font-family: ArgentumSans-Medium;
+    font-size: ${scale(14.5)}px;
+    color: #000000;
+    text-align: left;
+    margin-left: ${scale(8)}px;
 `

@@ -27,6 +27,7 @@ import {
     FormTitle,
     CheckBoxStyled,
     Button,
+    Sintoma,
 } from './styles'
 
 import translate from '../../../../locales/i18n'

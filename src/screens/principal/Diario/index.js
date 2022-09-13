@@ -5,6 +5,7 @@ import moment from 'moment'
 import Feather from 'react-native-vector-icons/Feather'
 import { Avatar } from 'react-native-elements'
 import { PieChart } from 'react-native-svg-charts'
+import { getAppSymptoms } from '../../../api/symptoms'
 import { useFocusEffect } from '@react-navigation/native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
@@ -67,6 +68,7 @@ const Diario = ({ navigation }) => {
     } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
+    const [symptoms, setSymptoms] = useState([])
     const [personAge, setPersonAge] = useState(12)
     const [allDatesMarked, setAllDatesMarked] = useState([])
     const [datesMarked, setDatesMarked] = useState([])
@@ -91,6 +93,10 @@ const Diario = ({ navigation }) => {
     )
 
     useEffect(() => {
+        getSymptoms()
+    }, [])
+
+    useEffect(() => {
         defineMarkedDates()
     }, [surveys])
 
@@ -112,6 +118,28 @@ const Diario = ({ navigation }) => {
             if (surveysCache) {
                 storeSurveys(surveysCache)
             }
+            setIsLoading(false)
+        }
+    }
+
+    const sortSymptoms = (symptoms = []) => {
+        // Sort in alphabetical order
+        symptoms.sort((a, b) => {
+            if (a.description !== b.description) {
+                if (a.description < b.description) return -1
+                return 1
+            }
+            return 0
+        })
+        return symptoms
+    }
+
+    const getSymptoms = async () => {
+        const response = await getAppSymptoms(token)
+
+        if (response.status === 200) {
+            const sortedSymptoms = sortSymptoms(response.data.symptoms)
+            setSymptoms(sortedSymptoms)
             setIsLoading(false)
         }
     }
@@ -294,8 +322,12 @@ const Diario = ({ navigation }) => {
                                                             moment(symptomMarker.created_at).format('YYYY-MM-DD') ===
                                                             day.dateString
                                                         ) {
-                                                            let sintomas = symptomMarker.symptom.toString()
-                                                            sintomas = sintomas.split(',').join('\n')
+                                                            /*console.log(symptoms.map(symptom => symptom.code))
+                                                            console.log(symptomMarker.symptom)
+                                                            if(symptoms.map(symptom => symptom.code).filter(symptom => (symptomMarker.symptom.includes(symptom)))) {
+                                                                console.log(symptomMarker.symptom)
+                                                            }*/
+                                                            let sintomas = symptoms.map((symptom) => symptom.description).join('\n')
                                                             setTitle("Sintomas Reportados")
                                                             setMessage(sintomas)
                                                             setShowAlert(true)
