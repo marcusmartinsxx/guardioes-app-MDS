@@ -8,6 +8,7 @@ import Dicas from '../screens/principal/Dicas'
 import Home from '../screens/principal/Home'
 import Mapa from '../screens/principal/Mapa'
 import Noticias from '../screens/principal/Noticias'
+import Ensino from '../screens/principal/Ensino'
 
 import translate from '../../locales/i18n'
 import { scale, vPercentage } from '../utils/scalling'
@@ -31,6 +32,8 @@ const TabBar = () => {
                         iconName = 'heart'
                     } else if (route.name === 'Noticias') {
                         iconName = 'message-square'
+                    } else if (route.name === 'Ensino') {
+                        iconName = 'book-open'
                     }
 
                     return (
@@ -97,6 +100,11 @@ const TabBar = () => {
                 name='Noticias'
                 component={Noticias}
                 options={{ title: translate('news.title') }}
+            />
+            <Tab.Screen
+                name='Ensino'
+                component={Ensino}
+                options={{title : "Ensino"}}
             />
         </Tab.Navigator>
     )

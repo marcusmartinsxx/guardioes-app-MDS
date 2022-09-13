@@ -1,12 +1,12 @@
 import React from 'react';
 import { Linking, Text, Button, View, TouchableOpacity } from 'react-native';
-import { Container } from '../../components/NormalForms';
+import { Container } from '../../../components/NormalForms';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import { scale, percentage } from '../../utils/scalling';
+import { scale, percentage } from '../../../utils/scalling';
 
 import {
   ScrollView,

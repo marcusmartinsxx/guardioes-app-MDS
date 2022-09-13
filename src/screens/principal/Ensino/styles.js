@@ -1,7 +1,7 @@
 
 import styled from 'styled-components';
 import { ScrollView as VistaRolante } from 'react-native';
-import { scale, percentage } from '../../utils/scalling';
+import { scale, percentage } from '../../../utils/scalling';
 import ShadowView from 'react-native-simple-shadow-view';
 
 export const ScrollView = styled(VistaRolante).attrs({
@@ -52,7 +52,6 @@ export const RedeSocial = styled.View`
 `
 
 export const SocialMediaButton = styled.TouchableOpacity`
-    heigth: ${percentage(13.75)}px;
     width: ${percentage(13.75)}px;
 `
 
