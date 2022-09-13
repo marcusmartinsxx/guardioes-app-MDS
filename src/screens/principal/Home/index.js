@@ -535,7 +535,6 @@ const Home = ({ navigation }) => {
                         </UserSelector>
                     </Users>
                 </Modal>
-
                 <CoolAlert
                     show={showTermsConsent}
                     title={translate('useTerms.consentTitle')}

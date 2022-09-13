@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import LinearGradient from 'react-native-linear-gradient'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import ShadowView from 'react-native-simple-shadow-view'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, Alert } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
 import { scale, percentage } from '../../../utils/scalling'

@@ -77,6 +77,9 @@ const Diario = () => {
     const [percentGood, setPercentGood] = useState(0)
     const [percentBad, setPercentBad] = useState(0)
     const [percentMissing, setPercentMissing] = useState(100)
+    const [showAlert, setShowAlert] = useState(false)
+    const [title, setTitle] = useState('')
+    const [message, setMessage] = useState('')
 
     const person = getCurrentUserInfo()
 
@@ -288,11 +291,14 @@ const Diario = () => {
                                                 allDatesMarked.map(
                                                     (symptomMarker) => {
                                                         if (
-                                                            moment(symptomMarker.bad_since).format('YYYY-MM-DD') ===
+                                                            moment(symptomMarker.created_at).format('YYYY-MM-DD') ===
                                                             day.dateString
                                                         ) {
-                                                            var sintomas = symptomMarker.symptom.toString()
-                                                            Alert.alert('Sintomas:', sintomas.split(',').join('\n'))
+                                                            let sintomas = symptomMarker.symptom.toString()
+                                                            sintomas = sintomas.split(',').join('\n')
+                                                            setTitle("Sintomas Reportados")
+                                                            setMessage(sintomas)
+                                                            setShowAlert(true)
                                                         }
                                                     }
                                                 )
@@ -415,6 +421,16 @@ const Diario = () => {
                         </UserReports>
                     </UserDash>
                 </ScrollViewStyled>
+                <CoolAlert
+                    show={showAlert}
+                    title={title}
+                    message={message}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton
+                    confirmText={"OK"}
+                    onConfirmPressed={() => setShowAlert(false)}
+                />
             </Container>
         </>
     )
